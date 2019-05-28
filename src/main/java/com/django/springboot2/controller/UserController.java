@@ -43,7 +43,7 @@ public class UserController {
                         @PathVariable(name = "id") BigDecimal id) throws Exception{
         logger.info("===========companyNme:"+companyName+"============");
         logger.info(serverInfo.toString());
-        logger.info("===========jdbcUrl:"+jdbcUrl+"============");
+        logger.info("===========jdbcUrl:"+jdbcUrl+"================");
         return userService.queryByPk(id);
     }
 
