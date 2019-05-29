@@ -3,15 +3,11 @@ package com.django.springboot2;
 import com.django.springboot2.confirguetion.SSLConfiguration;
 import com.django.springboot2.confirguetion.ServiceBeanConfig;
 import com.django.springboot2.confirguetion.SpringMvcConfig;
-import org.apache.catalina.connector.Connector;
 import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.boot.Banner;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
-import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RestController;
 
