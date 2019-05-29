@@ -1,50 +1,94 @@
 package com.django.springboot2.controller;
 
-import com.django.springboot2.pojo.domain.ServerInfo;
+
 import com.django.springboot2.pojo.domain.User;
-import com.django.springboot2.service.UserService;
+import com.django.springboot2.pojo.vo.UserVO;
+import com.django.springboot2.service.JdbcTmplUserService;
+import com.django.springboot2.service.serviceImpl.MyBatisUserServiceImpl;
+import com.django.springboot2.web.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.math.BigDecimal;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 
 /**
- * @ClassName UserController
- * @Author Administrator
- * @Date 2019/5/9
- * @Version 1.0
- * @Description TODO
- */
+ * @author liulongyun
+ * @create 2019/5/29 14:38
+ **/
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
-    Logger logger = LoggerFactory.getLogger(UserController.class);
-    @Autowired
-    UserService userService ;
-    // 从配置文件中获取值
-    @Value("${company.name}")
-    private String companyName;
-    @Autowired
-    private ServerInfo serverInfo;
+    private  Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
-    @Value("${jdbc.url}")
-    private String jdbcUrl;
+    @Autowired
+    private JdbcTmplUserService jdbcTmplUserService;
 
-    @RequestMapping(value = "/{id}",produces = "application/json;charset=UTF-8")
-    public User getUser(HttpServletRequest request, HttpServletResponse response,
-                        @PathVariable(name = "id") BigDecimal id) throws Exception{
-        logger.info("===========companyNme:"+companyName+"============");
-        logger.info(serverInfo.toString());
-        logger.info("===========jdbcUrl:"+jdbcUrl+"================");
-        return userService.queryByPk(id);
+    @Autowired
+    private MyBatisUserServiceImpl userService;
+
+
+    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.POST)
+    public HttpResult registerUser(@RequestBody UserVO userVO) throws Exception{
+
+        User user = new User(userVO);
+        jdbcTmplUserService.insertUser(user);
+        HttpResult result = new HttpResult();
+        result.setStatus(HttpStatus.OK.value());
+        result.setMsg(HttpStatus.OK.getReasonPhrase());
+        return result;
+
+    }
+
+
+    @RequestMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.GET)
+    public HttpResult getUserById(@PathVariable(value = "id") Long id) throws Exception{
+
+        User user = jdbcTmplUserService.getUser(id);
+        HttpResult result = new HttpResult();
+        result.setStatus(HttpStatus.OK.value());
+        result.setMsg(HttpStatus.OK.getReasonPhrase());
+        result.setData(new UserVO(user));
+        return result;
+    }
+
+    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.PUT)
+    public  HttpResult deleteById(@RequestBody UserVO userVO) throws Exception{
+
+        User user = new User(userVO);
+        jdbcTmplUserService.updateUser(user);
+        HttpResult result = new HttpResult();
+        result.setStatus(HttpStatus.OK.value());
+        result.setMsg(HttpStatus.OK.getReasonPhrase());
+        return result;
+
+    }
+
+    @RequestMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.DELETE)
+    public  HttpResult deleteById(@PathVariable(value = "id") Long id) throws Exception{
+
+        jdbcTmplUserService.deleteUser(id);
+        HttpResult result = new HttpResult();
+        result.setStatus(HttpStatus.OK.value());
+        result.setMsg(HttpStatus.OK.getReasonPhrase());
+        return result;
+
+    }
+
+
+    @RequestMapping(value = "/getUserByIdWithMybatis",produces = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.GET)
+    public HttpResult getUserByIdWithMybatis(@RequestParam(value = "id") Long id) throws Exception{
+
+        logger.info("======================getUserByIdWithMybatis    param id:"+id);
+
+        User user = userService.getUser(new Long(id));
+        HttpResult result = new HttpResult();
+        result.setStatus(HttpStatus.OK.value());
+        result.setMsg(HttpStatus.OK.getReasonPhrase());
+        result.setData(user);
+        return result;
     }
 
 

@@ -1,6 +1,6 @@
 package com.django.springboot2.service;
 
-import com.django.springboot2.pojo.domain.User;
+import com.django.springboot2.pojo.domain.TestUser;
 
 import java.math.BigDecimal;
 
@@ -12,8 +12,8 @@ import java.math.BigDecimal;
  * @Version 1.0
  */
 public interface UserService {
-    public void insert(User user) throws Exception;
-    public void del(User user) throws Exception;
-    public void update(User user) throws Exception;
-    public User queryByPk(BigDecimal userId) throws Exception;
+    public void insert(TestUser user) throws Exception;
+    public void del(TestUser user) throws Exception;
+    public void update(TestUser user) throws Exception;
+    public TestUser queryByPk(BigDecimal userId) throws Exception;
 }

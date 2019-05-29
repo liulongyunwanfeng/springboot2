@@ -1558,12 +1558,12 @@ Unconditional classes:
 12:31:54.516 springboot2 [http-nio-80-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
 12:31:54.517 springboot2 [http-nio-80-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 11 ms
 12:32:00.175 springboot2 [http-nio-80-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - POST "/springboot2/user/1245678", parameters={}
-12:32:00.190 springboot2 [http-nio-80-exec-1] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to public com.django.springboot2.pojo.domain.User com.django.springboot2.controller.UserController.getUser(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,java.math.BigDecimal) throws java.lang.Exception
+12:32:00.190 springboot2 [http-nio-80-exec-1] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to public com.django.springboot2.pojo.domain.TestUser com.django.springboot2.controller.UserController.getUser(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,java.math.BigDecimal) throws java.lang.Exception
 12:32:00.253 springboot2 [http-nio-80-exec-1] INFO  c.d.s.controller.UserController - ===========companyNme:DFree============
 12:32:00.253 springboot2 [http-nio-80-exec-1] INFO  c.d.s.controller.UserController - ServerInfo{port='80', desplayName='springboot2', desc='springboot2自学项目'}
 12:32:00.253 springboot2 [http-nio-80-exec-1] INFO  c.d.s.controller.UserController - ===========jdbcUrl:jdbc:mysql://localhost:3306/dbName?useUnicode=true&useSSL=true============
 12:32:00.253 springboot2 [http-nio-80-exec-1] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Using 'application/json;charset=UTF-8', given [*/*] and supported [application/json;charset=UTF-8]
-12:32:00.300 springboot2 [http-nio-80-exec-1] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Writing [com.django.springboot2.pojo.domain.User@77d8023d]
+12:32:00.300 springboot2 [http-nio-80-exec-1] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Writing [com.django.springboot2.pojo.domain.TestUser@77d8023d]
 12:32:00.458 springboot2 [http-nio-80-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
 13:40:27.178 springboot2 [http-nio-80-exec-3] DEBUG o.s.web.servlet.DispatcherServlet - GET "/springboot2/", parameters={}
 13:40:27.188 springboot2 [http-nio-80-exec-3] DEBUG o.s.w.s.h.SimpleUrlHandlerMapping - Mapped to ParameterizableViewController [view="/index"]

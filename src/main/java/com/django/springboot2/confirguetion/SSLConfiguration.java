@@ -43,8 +43,6 @@ public class SSLConfiguration {
         factory.addAdditionalTomcatConnectors(httpConnector());
         return factory;
     }
-
-
     @Bean
     public Connector httpConnector(){
         Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
