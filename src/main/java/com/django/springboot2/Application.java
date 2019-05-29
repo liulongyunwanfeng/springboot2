@@ -4,6 +4,7 @@ import com.django.springboot2.confirguetion.SSLConfiguration;
 import com.django.springboot2.confirguetion.ServiceBeanConfig;
 import com.django.springboot2.confirguetion.SpringMvcConfig;
 import org.apache.catalina.connector.Connector;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,6 +12,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.*;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -28,6 +30,11 @@ import org.springframework.web.bind.annotation.RestController;
  * @Import 用于导入java配置
  * @ImportResource 用于导入xml配置
  *
+ * @MapperScan
+ *  @MapperScan允许我们通过扫描加载mybatis的Mapper,如果springboot中不存在多个SqlSessionFactory
+ *  或者SqlSessionTemplate，那么完全可以不配置sqlSessionFactoryFef(或者SqlSessionTemplateRef)
+ *  所以这里没有配置这些属性，basePackages 配置mybatis相关注解的扫描包，并结合@Repostory注解作为数据库实体限定
+ *  也可以用@Mapper(@Repostory是spring对持久层的注解，@Mapper是mybatis提供的持久层注解)
  *
  */
 @RestController
@@ -37,6 +44,7 @@ import org.springframework.web.bind.annotation.RestController;
         "classpath:config/serverconfig.properties",
         "classpath:config/httpencoding.properties"},
         encoding = "UTF-8")
+@MapperScan(basePackages ="com.django.springboot2" , annotationClass = Repository.class)
 public class Application {
 
     public static void main(String[] args) {

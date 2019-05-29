@@ -1,67 +1,70 @@
 package com.django.springboot2.pojo.domain;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
+import com.django.springboot2.Enum.SexEnum;
+import com.django.springboot2.pojo.vo.UserVO;
+import org.apache.ibatis.type.Alias;
 
 /**
- * @ClassName User
- * @Author Administrator
- * @Date 2019/5/9
- * @Version 1.0
- * @Description 用户信息表
- */
-public class User implements Serializable {
+ * @author liulongyun
+ * @create 2019/5/29 12:45
+ **/
+@Alias(value = "user") //mybatis 指定别名
+public class User {
+    private Long id = null;
+    private String userName=null;
+
+    // 使用mybatis 时 这个枚举类的封装需要用到typeHandler
+    private SexEnum sex = null;
+    private String note = null;
 
 
-    private BigDecimal id;
-    private String name;
-    private Integer sex;
-    private Date birthday;
-    private String introduce;
+    public User() {
+    }
+
+    public User(UserVO userVO) {
+
+        this.id= userVO.getId();
+        this.userName=userVO.getUserName();
+        this.note=userVO.getNote();
+
+        if(SexEnum.MALE.getId()==userVO.getSex()){
+            this.sex = SexEnum.MALE;
+        }else if(SexEnum.FEMALE.getId()==userVO.getSex()){
+            this.sex = SexEnum.FEMALE;
+        }
 
 
+    }
 
-
-
-
-    public BigDecimal getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(BigDecimal id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public Integer getSex() {
+    public SexEnum getSex() {
         return sex;
     }
 
-    public void setSex(Integer sex) {
+    public void setSex(SexEnum sex) {
         this.sex = sex;
     }
 
-    public Date getBirthday() {
-        return birthday;
+    public String getNote() {
+        return note;
     }
 
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
-
-    public String getIntroduce() {
-        return introduce;
-    }
-
-    public void setIntroduce(String introduce) {
-        this.introduce = introduce;
+    public void setNote(String note) {
+        this.note = note;
     }
 }

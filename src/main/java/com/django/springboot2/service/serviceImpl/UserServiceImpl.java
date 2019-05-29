@@ -1,6 +1,6 @@
 package com.django.springboot2.service.serviceImpl;
 
-import com.django.springboot2.pojo.domain.User;
+import com.django.springboot2.pojo.domain.TestUser;
 import com.django.springboot2.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,25 +20,25 @@ import java.util.Date;
 public class UserServiceImpl implements UserService {
     Logger logger = LoggerFactory.getLogger(UserService.class);
     @Override
-    public void insert(User user) throws Exception {
+    public void insert(TestUser user) throws Exception {
         logger.info("=============新增User==============");
 
     }
 
     @Override
-    public void del(User user) throws Exception {
+    public void del(TestUser user) throws Exception {
         logger.info("=============删除User==============");
     }
 
     @Override
-    public void update(User user) throws Exception {
+    public void update(TestUser user) throws Exception {
         logger.info("=============更新User==============");
 
     }
 
     @Override
-    public User queryByPk(BigDecimal userId) throws Exception {
-        User user = new User();
+    public TestUser queryByPk(BigDecimal userId) throws Exception {
+        TestUser user = new TestUser();
         user.setId(userId);
         user.setName("django");
         user.setBirthday(new Date());
