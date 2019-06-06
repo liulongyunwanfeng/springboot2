@@ -1,7 +1,10 @@
 package com.django.springboot2.dao.mapper;
 
 import com.django.springboot2.pojo.domain.User;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author liulongyun
@@ -10,5 +13,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserMapper {
-    public User getUser(Long id);
+     User getUser(Long id);
+     int insert(User user);
+     void updateUser(User user);
+     List<User> findUsers(@Param("userName") String userName, @Param("note") String note);
+     int deleteUser(Long id);
 }

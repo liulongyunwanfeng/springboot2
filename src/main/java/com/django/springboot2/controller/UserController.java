@@ -3,7 +3,6 @@ package com.django.springboot2.controller;
 
 import com.django.springboot2.pojo.domain.User;
 import com.django.springboot2.pojo.vo.UserVO;
-import com.django.springboot2.service.JdbcTmplUserService;
 import com.django.springboot2.service.serviceImpl.MyBatisUserServiceImpl;
 import com.django.springboot2.web.HttpResult;
 import org.slf4j.Logger;
@@ -12,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author liulongyun
@@ -23,63 +25,138 @@ public class UserController {
 
     private  Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
-    @Autowired
-    private JdbcTmplUserService jdbcTmplUserService;
+//    @Autowired
+//    private JdbcTmplUserService jdbcTmplUserService;
 
     @Autowired
     private MyBatisUserServiceImpl userService;
+
+
+//    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.POST)
+//    public HttpResult registerUser(@RequestBody UserVO userVO) throws Exception{
+//
+//        User user = new User(userVO);
+//        jdbcTmplUserService.insertUser(user);
+//        HttpResult result = new HttpResult();
+//        result.setStatus(HttpStatus.OK.value());
+//        result.setMsg(HttpStatus.OK.getReasonPhrase());
+//        return result;
+//
+//    }
+//
+//
+//    @RequestMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.GET)
+//    public HttpResult getUserById(@PathVariable(value = "id") Long id) throws Exception{
+//
+//        User user = jdbcTmplUserService.getUser(id);
+//        HttpResult result = new HttpResult();
+//        result.setStatus(HttpStatus.OK.value());
+//        result.setMsg(HttpStatus.OK.getReasonPhrase());
+//        result.setData(new UserVO(user));
+//        return result;
+//    }
+//
+//    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.PUT)
+//    public  HttpResult deleteById(@RequestBody UserVO userVO) throws Exception{
+//
+//        User user = new User(userVO);
+//        jdbcTmplUserService.updateUser(user);
+//        HttpResult result = new HttpResult();
+//        result.setStatus(HttpStatus.OK.value());
+//        result.setMsg(HttpStatus.OK.getReasonPhrase());
+//        return result;
+//
+//    }
+//
+//    @RequestMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.DELETE)
+//    public  HttpResult deleteById(@PathVariable(value = "id") Long id) throws Exception{
+//
+//        jdbcTmplUserService.deleteUser(id);
+//        HttpResult result = new HttpResult();
+//        result.setStatus(HttpStatus.OK.value());
+//        result.setMsg(HttpStatus.OK.getReasonPhrase());
+//        return result;
+//
+//    }
 
 
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.POST)
     public HttpResult registerUser(@RequestBody UserVO userVO) throws Exception{
 
         User user = new User(userVO);
-        jdbcTmplUserService.insertUser(user);
+//        userService.addUser(user);
+        userService.insertUser(user);
         HttpResult result = new HttpResult();
         result.setStatus(HttpStatus.OK.value());
         result.setMsg(HttpStatus.OK.getReasonPhrase());
         return result;
 
     }
+
+    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.PUT)
+    public HttpResult updateUser(@RequestBody UserVO userVO) throws Exception{
+
+
+        User user = new User(userVO);
+        userService.updateUserName(userVO.getId(),userVO.getUserName());
+        HttpResult result = new HttpResult();
+        result.setStatus(HttpStatus.OK.value());
+        result.setMsg(HttpStatus.OK.getReasonPhrase());
+        return result;
+
+
+    }
+
+    @RequestMapping(value = "/findusers",method = RequestMethod.GET)
+    public HttpResult findUsers(@RequestParam("userName") String userName,@RequestParam("note")String note)throws Exception{
+
+        List<User> users = userService.findUsers(userName, note);
+        HttpResult result = new HttpResult();
+        result.setStatus(HttpStatus.OK.value());
+        result.setMsg(HttpStatus.OK.getReasonPhrase());
+        result.setData(users);
+        return result;
+    }
+
+
+    @RequestMapping(method = RequestMethod.DELETE)
+    public HttpResult deleteUser(@RequestParam("id") Long id) throws Exception{
+
+        userService.deleteUser(id);
+        HttpResult result = new HttpResult();
+        result.setStatus(HttpStatus.OK.value());
+        result.setMsg(HttpStatus.OK.getReasonPhrase());
+        return result;
+
+    }
+
+
+
+
+
+    @RequestMapping(value = "/batch",produces = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.POST)
+    public HttpResult registerUserBath(@RequestBody List<UserVO> userVOs) throws Exception{
+
+        List<User> users = new ArrayList<>();
+
+        for (int i = 0; i < userVOs.size(); i++) {
+            users.add(new User(userVOs.get(i)));
+
+        }
+        userService.insertUserBatch1(users);
+        HttpResult result = new HttpResult();
+        result.setStatus(HttpStatus.OK.value());
+        result.setMsg(HttpStatus.OK.getReasonPhrase());
+        result.setData(users);
+        return result;
+
+    }
+
+
 
 
     @RequestMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.GET)
     public HttpResult getUserById(@PathVariable(value = "id") Long id) throws Exception{
-
-        User user = jdbcTmplUserService.getUser(id);
-        HttpResult result = new HttpResult();
-        result.setStatus(HttpStatus.OK.value());
-        result.setMsg(HttpStatus.OK.getReasonPhrase());
-        result.setData(new UserVO(user));
-        return result;
-    }
-
-    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.PUT)
-    public  HttpResult deleteById(@RequestBody UserVO userVO) throws Exception{
-
-        User user = new User(userVO);
-        jdbcTmplUserService.updateUser(user);
-        HttpResult result = new HttpResult();
-        result.setStatus(HttpStatus.OK.value());
-        result.setMsg(HttpStatus.OK.getReasonPhrase());
-        return result;
-
-    }
-
-    @RequestMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.DELETE)
-    public  HttpResult deleteById(@PathVariable(value = "id") Long id) throws Exception{
-
-        jdbcTmplUserService.deleteUser(id);
-        HttpResult result = new HttpResult();
-        result.setStatus(HttpStatus.OK.value());
-        result.setMsg(HttpStatus.OK.getReasonPhrase());
-        return result;
-
-    }
-
-
-    @RequestMapping(value = "/getUserByIdWithMybatis",produces = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.GET)
-    public HttpResult getUserByIdWithMybatis(@RequestParam(value = "id") Long id) throws Exception{
 
         logger.info("======================getUserByIdWithMybatis    param id:"+id);
 
@@ -90,6 +167,8 @@ public class UserController {
         result.setData(user);
         return result;
     }
+
+
 
 
 }

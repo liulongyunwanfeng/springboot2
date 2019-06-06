@@ -4,12 +4,22 @@ import com.django.springboot2.confirguetion.SSLConfiguration;
 import com.django.springboot2.confirguetion.ServiceBeanConfig;
 import com.django.springboot2.confirguetion.SpringMvcConfig;
 import org.mybatis.spring.annotation.MapperScan;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.PostConstruct;
 
 /**
  * @ClassName Application
@@ -24,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
  *          @ComponentScan
  *
  * @Import 用于导入java配置
- * @ImportResource 用于导入xml配置
+ * @ImportResource 用于导入xml配置t
  *
  * @MapperScan
  *  @MapperScan允许我们通过扫描加载mybatis的Mapper,如果springboot中不存在多个SqlSessionFactory
@@ -41,8 +51,10 @@ import org.springframework.web.bind.annotation.RestController;
         "classpath:config/httpencoding.properties"},
         encoding = "UTF-8")
 @MapperScan(basePackages ="com.django.springboot2" , annotationClass = Repository.class)
+@EnableCaching
 public class Application {
 
+    private  Logger logger = LoggerFactory.getLogger(this.getClass().getName());
     public static void main(String[] args) {
 
         // SpringApplication.run(Application.class, args);
@@ -59,7 +71,37 @@ public class Application {
 
     }
 
+    @Autowired
+    private PlatformTransactionManager transactionManager = null;
 
+
+
+    @PostConstruct
+    public void viewTranscationManager(){
+        logger.info("===============transactionManager=============:"+transactionManager.getClass().getName());
+    }
+
+    /**
+     * springboot使用redis
+     * 在application.properties中做了redis配置就可以使用RedisTemplate进行redis操作 了
+     * 这里主要是重新把默认的序列化方式修改为StringSerializer
+     */
+
+    @Autowired
+    private RedisTemplate redisTemplate = null;
+
+
+    @PostConstruct
+    public void setRedisTemplateConfig(){
+
+        RedisSerializer stringSerializer = this.redisTemplate.getStringSerializer();
+        // 配置序列化方式
+        redisTemplate.setKeySerializer(stringSerializer);
+        redisTemplate.setHashKeySerializer(stringSerializer);
+        redisTemplate.setHashValueSerializer(stringSerializer);
+
+
+    }
 
 
 }

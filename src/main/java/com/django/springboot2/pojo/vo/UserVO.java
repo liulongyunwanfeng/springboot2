@@ -1,7 +1,10 @@
 package com.django.springboot2.pojo.vo;
 
 import com.django.springboot2.Enum.SexEnum;
+import com.django.springboot2.pojo.domain.Role;
 import com.django.springboot2.pojo.domain.User;
+
+import java.util.List;
 
 /**
  * @author liulongyun
@@ -12,6 +15,8 @@ public class UserVO {
     private String userName=null;
     private int sex = 1;
     private String note = null;
+
+    private List<Role> roles = null;
 
 
     public UserVO() {
@@ -27,8 +32,20 @@ public class UserVO {
         }else if(user.getSex().getId()== SexEnum.FEMALE.getId()){
             this.sex=SexEnum.FEMALE.getId();
         }
+
+        this.roles = user.getRoles();
     }
 
+
+
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
 
     public Long getId() {
         return id;
