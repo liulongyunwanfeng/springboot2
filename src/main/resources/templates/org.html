@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://localhost:8443/springboot2/js/jQuery_v3.4.1.js"></script>
+</head>
+<body>
+添加组织
+<div>
+    <b>添加组织</b>
+    <hr/>
+</div>
+<form>
+    <label>单位ID：</label><input id="orgId" type="text" name="orgId" value="" placeholder="请输入单位......."/><br/>
+    <label>单位名称：</label><input id="orgName" type="text" name="orgName" value="" placeholder="请输入单位名称......."/><br/>
+    <label>单位地址：</label><input id="orgAddress" type="text" name="orgAddress" value=""  placeholder="请输入单位地址......."/><br/>
+    <label>单位网址：</label><input id="orgWebSit" type="text" name="orgWebSit" value="" placeholder="请输入单位网址......."/><br/>
+    <label>单位编码：</label><input id="orgNum" type="text" name="orgNum" value="" placeholder="请输入单位编码......."/><br/>
+    <label>单位电话：</label><input id="orgTelNum" type="text" name="orgTelNum" value="" placeholder="请输入单位电话号码......."/><br/>
+    <label>单位备注：</label><input id="note" type="text" name="note"  value="" placeholder="备注信息......."/><br/>
+
+    <label>单位备注：</label><input type="button" onclick="orgSubmit()" value="提交"/><br/>
+
+</form>
+
+</body>
+<script>
+
+    function orgSubmit(){
+
+        var orgId = $("#orgId").val();
+        var orgName = $("#orgName").val();
+        var orgAddress = $("#orgAddress").val();
+        var orgWebSit = $("#orgWebSit").val();
+        var orgNum = $("#orgNum").val();
+        var orgTelNum = $("#orgTelNum").val();
+        var note = $("#note").val();
+        var data = {
+                orgName:orgName,
+                orgAddress:orgAddress,
+                orgWebSit:orgWebSit,
+                orgNum:orgNum,
+                orgTelNum:orgTelNum,
+                note:note
+        }
+
+        console.log(data);
+        $.ajax({
+            url:'https://localhost:8443/springboot2/org/'+orgId,
+            type:'post',
+            contentType:"application/json",
+           /* dataType:"application/json,*/
+            // dataType 预期后端返回的数据类型，这个最好不指定，浏览器会根据后端返回的的指定
+            // 因为如果前端指定，如果和后端返回的不一样，就不会走success方法，有时候我们后端
+            // 指定了类型，和前段指定的也一样，也不走success方法，所有还是别指定的好
+            async:true,
+            data:JSON.stringify(data),
+            success:function(response,status,xhr) {
+                console.log("============调用成功success================");
+                console.log(response);
+                console.log(status);
+                console.log('请求响应码:'+xhr.status);
+            },
+            error:function (xhr) {
+                console.log("============调用成功error================");
+                console.log('请求响应码:'+xhr.status)
+            }
+
+        });
+    }
+
+</script>
+</html>

@@ -2,14 +2,24 @@ package com.django.springboot2.controller;
 
 import com.django.springboot2.pojo.domain.Organization;
 import com.django.springboot2.service.OrganizationService;
+import com.django.springboot2.web.validator.OrgnazitionValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author liulongyun
@@ -23,14 +33,34 @@ public class OrganizationController extends  BaseController {
     private OrganizationService organizationService = null;
 
 
-    @PostMapping("/{id}")
-    public  ResponseEntity addOrg(@RequestBody Organization org,@PathVariable("id") BigDecimal id) throws Exception{
-        org.setId(id);
-        organizationService.add(org);
+
+
+    // 绑定自定义validator
+    @InitBinder
+    public void initBinder(WebDataBinder binder){
+        // 绑定验证器
+        binder.setValidator(new OrgnazitionValidator());
+    }
+
+
+
+
+
+    @PostMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public  ResponseEntity addOrg(@Valid @RequestBody Organization org, @PathVariable("id") BigDecimal id) {
+
+        ResponseEntity<Organization> responseEntity = null;
         HttpHeaders httpHeaders = new HttpHeaders();
+        //        System.out.println(1/0); 除0异常验证
+        org.setId(id);
+        org.setOrgRegistDate(new Date());
+        organizationService.add(org);
         httpHeaders.add("success","true");
-        ResponseEntity<Organization> responseEntity =new ResponseEntity(httpHeaders,HttpStatus.ACCEPTED);
+        Map<String,Object> resultContent = new HashMap<>();
+        resultContent.put("successMsg","用户添加成功");
+        responseEntity =new ResponseEntity(resultContent,httpHeaders,HttpStatus.ACCEPTED);
         return  responseEntity;
+
     }
 
 

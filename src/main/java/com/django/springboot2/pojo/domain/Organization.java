@@ -2,6 +2,7 @@ package com.django.springboot2.pojo.domain;
 
 import org.apache.ibatis.type.Alias;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -15,6 +16,7 @@ import java.util.Date;
 public class Organization implements Serializable {
 
   private BigDecimal id;
+//  @NotNull(message = "组织名称不能为空") // JSR-303 的验证注解
   private String orgName;
   private String orgAddress;
   private String orgWebSit;
