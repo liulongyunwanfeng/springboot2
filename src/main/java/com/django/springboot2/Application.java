@@ -1,21 +1,17 @@
 package com.django.springboot2;
 
-import com.django.springboot2.confirguetion.SSLConfiguration;
-import com.django.springboot2.confirguetion.ServiceBeanConfig;
-import com.django.springboot2.confirguetion.SpringMvcConfig;
-import org.mybatis.spring.annotation.MapperScan;
+import com.django.springboot2.confirguetion.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -45,13 +41,14 @@ import javax.annotation.PostConstruct;
  */
 @RestController
 @SpringBootApplication
-@Import({ServiceBeanConfig.class,SpringMvcConfig.class,SSLConfiguration.class})
+@Import({ServiceBeanConfig.class,SpringMvcConfig.class,SSLConfiguration.class,
+        MybatisPlusConfig.class, JdbcSecurityConfigure.class})
 @PropertySource(value = {"classpath:config/programconfig.properties",
         "classpath:config/serverconfig.properties",
         "classpath:config/httpencoding.properties"},
         encoding = "UTF-8")
-@MapperScan(basePackages ="com.django.springboot2" , annotationClass = Repository.class)
 @EnableCaching
+@EnableAspectJAutoProxy
 public class Application {
 
     private  Logger logger = LoggerFactory.getLogger(this.getClass().getName());

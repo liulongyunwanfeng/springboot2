@@ -12,7 +12,7 @@ public class OrgnazitionValidator implements Validator {
     @Override
     public boolean supports(Class<?> clazz) {
         // 该验证只支持Orgnaziton类型的验证
-        if(Organization.class.equals(clazz)){
+        if(clazz.equals(Organization.class)){
             return true;
         }
         return false;

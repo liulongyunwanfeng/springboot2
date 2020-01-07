@@ -8,5 +8,5 @@
     </settings>
    <plugins>
        <plugin interceptor="com.django.springboot2.dao.plugins.MyPlugin"></plugin>
-   </plugins>
+     </plugins>
 </configuration>

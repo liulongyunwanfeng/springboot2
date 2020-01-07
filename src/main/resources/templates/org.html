@@ -1,9 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <script src="https://localhost:8443/springboot2/js/jQuery_v3.4.1.js"></script>
+    <meta content="text/html;charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!--在HTML页面加上，也可以搞个隐藏域来-->
+    <!-- CSRF -->
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <!-- default header name is X-CSRF-TOKEN -->
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+   <title>Title</title>
+    <script th:src='${#request.getContextPath()+"/js/jQuery_v3.4.1.js"}' type="text/javascript"></script>
 </head>
 <body>
 添加组织
@@ -27,7 +33,14 @@
 </body>
 <script>
 
+
+
+
+
     function orgSubmit(){
+
+        var csrfToken = $("meta[name='_csrf']").attr("content");
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
 
         var orgId = $("#orgId").val();
         var orgName = $("#orgName").val();
@@ -56,6 +69,10 @@
             // 指定了类型，和前段指定的也一样，也不走success方法，所有还是别指定的好
             async:true,
             data:JSON.stringify(data),
+            beforeSend: function(request) {
+                request.setRequestHeader(csrfHeader, csrfToken); // 添加  CSRF Token
+
+            },
             success:function(response,status,xhr) {
                 console.log("============调用成功success================");
                 console.log(response);

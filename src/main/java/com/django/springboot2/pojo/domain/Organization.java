@@ -1,5 +1,6 @@
 package com.django.springboot2.pojo.domain;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import org.apache.ibatis.type.Alias;
 
 import javax.validation.constraints.NotNull;
@@ -13,6 +14,7 @@ import java.util.Date;
  **/
 
 @Alias("organization")
+@TableName("t_organization")
 public class Organization implements Serializable {
 
   private BigDecimal id;

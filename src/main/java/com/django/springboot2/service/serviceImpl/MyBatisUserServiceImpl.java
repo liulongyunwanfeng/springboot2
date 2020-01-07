@@ -1,6 +1,7 @@
 package com.django.springboot2.service.serviceImpl;
 
 import com.django.springboot2.dao.mapper.UserMapper;
+import com.django.springboot2.pojo.domain.Role;
 import com.django.springboot2.pojo.domain.User;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class MyBatisUserServiceImpl implements ApplicationContextAware {
 
     @Cacheable(value = "redisCache",key = "'redis_user_'+#id")
     public User getUser(Long id) throws Exception{
-        return  userMapper.getUser(id);
+        return  userMapper.selectById(id);
     }
 
     /**
@@ -74,7 +75,7 @@ public class MyBatisUserServiceImpl implements ApplicationContextAware {
                 return  null;
             }
             user.setUserName(userName);
-            userMapper.updateUser(user);
+            userMapper.updateById(user);
             return user;
         } catch (Exception e) {
             e.printStackTrace();
@@ -95,13 +96,31 @@ public class MyBatisUserServiceImpl implements ApplicationContextAware {
     @Transactional
     @CacheEvict(value="redisCache",key = "'redis_user_'+#id",beforeInvocation = false)
     public int deleteUser(Long id){
-        return  userMapper.deleteUser(id);
+        return  userMapper.deleteById(id);
     }
 
 
+    @CachePut(value = "redisCache",key = "'redis_user_'+#id",condition = "#result != 'null'")
+    public User queryByUserNameAndPwd(String userName,String pwd){
+
+       return userMapper.selectByUserNameAndPwd(userName,pwd);
+
+    }
+
+    @CachePut(value = "redisCache",key = "'redis_user_'+#id",condition = "#result != 'null'")
+    public User selectUserByUserName(String userName){
+
+        return userMapper.selectUserByUserName(userName);
+
+    }
 
 
+    @CachePut(value = "redisCache",key = "'redis_user_'+#id",condition = "#result != 'null'")
+    public List<Role> selectRoleByUserName(String userName){
 
+        return userMapper.selectRoleByUserName(userName);
+
+    }
 
 
 

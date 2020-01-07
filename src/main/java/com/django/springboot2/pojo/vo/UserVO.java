@@ -4,19 +4,25 @@ import com.django.springboot2.Enum.SexEnum;
 import com.django.springboot2.pojo.domain.Role;
 import com.django.springboot2.pojo.domain.User;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author liulongyun
  * @create 2019/5/29 12:45
  **/
-public class UserVO {
+public class UserVO implements Serializable {
     private Long id = null;
     private String userName=null;
     private int sex = 1;
     private String note = null;
 
     private List<Role> roles = null;
+
+
+    private  Integer available;
+
+    private String pwd;
 
 
     public UserVO() {
@@ -27,6 +33,9 @@ public class UserVO {
         this.id=user.getId();
         this.userName=user.getUserName();
         this.note=user.getNote();
+        this.pwd = user.getPwd();
+        this.available = user.getAvailable();
+
         if(user.getSex().getId()== SexEnum.MALE.getId()){
             this.sex=SexEnum.MALE.getId();
         }else if(user.getSex().getId()== SexEnum.FEMALE.getId()){
@@ -37,7 +46,21 @@ public class UserVO {
     }
 
 
+    public Integer getAvailable() {
+        return available;
+    }
 
+    public void setAvailable(Integer available) {
+        this.available = available;
+    }
+
+    public String getPwd() {
+        return pwd;
+    }
+
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
+    }
 
     public List<Role> getRoles() {
         return roles;

@@ -5,11 +5,14 @@ import com.django.springboot2.pojo.domain.User;
 import com.django.springboot2.pojo.vo.UserVO;
 import com.django.springboot2.service.serviceImpl.MyBatisUserServiceImpl;
 import com.django.springboot2.web.HttpResult;
+import org.apache.tomcat.util.security.MD5Encoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -19,6 +22,8 @@ import java.util.List;
  * @author liulongyun
  * @create 2019/5/29 14:38
  **/
+
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -84,7 +89,7 @@ public class UserController {
     public HttpResult registerUser(@RequestBody UserVO userVO) throws Exception{
 
         User user = new User(userVO);
-//        userService.addUser(user);
+        user.setPwd(new BCryptPasswordEncoder().encode(user.getPwd()));
         userService.insertUser(user);
         HttpResult result = new HttpResult();
         result.setStatus(HttpStatus.OK.value());
@@ -92,6 +97,26 @@ public class UserController {
         return result;
 
     }
+
+   /**
+    * @Author liulongyun
+    * @Date 2019/10/29 16:13
+    * @api {POST} /user/updateUser   --更新用户
+    * @apiGroup  custom-info
+    * @apiVersion 1.0.0
+    * @apiDescription 更新用户
+    * @apiParam {Long} id 客户主表主键
+    * @apiParamExample {json} 请求样例：
+    * {
+    * "id":"1234567890"
+    * }
+    * @apiSuccessExample {json} 成功:
+    * {
+    *   "code": 0,
+    *   "message": "操作成功",
+    * }
+    *
+    */
 
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE,method = RequestMethod.PUT)
     public HttpResult updateUser(@RequestBody UserVO userVO) throws Exception{

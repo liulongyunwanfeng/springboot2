@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.django.springboot2.dao.mapper.OrgnizationMapper" >
+
+    <select id="queryPageByWhere" resultType="organization">
+
+        SELECT id, org_name, org_address, org_web_sit,org_num,
+        org_tel_num, org_regist_date, note FROM t_organization
+        <where>
+
+            <if test="org.orgName !=null">
+
+                <bind name="orgNamePattern" value="'%'+ org.orgName +'%'"/>
+                AND org_name LIKE #{orgNamePattern}
+            </if>
+            <if test="org.orgAddress !=null">
+                AND org_address = #{org.orgAddress}
+            </if>
+            <if test="org.orgWebSit !=null">
+                AND org_web_sit = #{org.orgWebSit}
+            </if>
+            <if test="org.orgNum !=null">
+                AND org_num = #{org.orgNum}
+            </if>
+            <if test="org.orgTelNum !=null">
+                AND org_tel_num = #{org.orgTelNum}
+            </if>
+            <if test="org.orgRegistDate !=null">
+                AND org_regist_date = #{org.orgRegistDate}
+            </if>
+            <if test="org.note !=null">
+                <bind name="pattern" value="'%'+ org.note +'%'"/>
+                AND note LIKE #{pattern}
+            </if>
+
+
+        </where>
+
+    </select>
+
+
+</mapper>

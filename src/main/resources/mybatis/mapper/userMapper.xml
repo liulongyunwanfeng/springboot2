@@ -3,22 +3,23 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.django.springboot2.dao.mapper.UserMapper">
-    <select id="getUser" parameterType="long" resultType="user">
-        select id, user_name as userName, sex, note from t_user where id = #{id}
-    </select>
-    <insert id="insert" parameterType="user" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO t_user (user_name, sex, note) VALUES (#{userName},#{sex},#{note})
-    </insert>
-
-    <update id="updateUser" parameterType="user" >
-      UPDATE t_user SET user_name=#{userName}, sex=#{sex}, note=#{note} WHERE (id=#{id});
-    </update>
-
-    <delete id="deleteUser" parameterType="long" >
-        DELETE FROM t_user WHERE id=#{id}
-    </delete>
-
     <select id="findUsers" resultType="user">
-        SELECT  id,user_name as userName,sex,note FROM t_user WHERE user_name = #{useName} and note = #{note}
+        SELECT  id,user_name as userName,sex,note,pwd,available FROM t_user WHERE user_name = #{useName} and note = #{note}
     </select>
+    
+    <select id="selectByUserAndPwd" resultType="user">
+        SELECT  id,user_name as userName,sex,note,pwd,available FROM t_user WHERE user_name = #{userName} and note = #{pwd}
+    </select>
+
+    <select id="selectUserByUserName" resultType="user">
+        SELECT  id,user_name as userName,sex,note,pwd,available FROM t_user WHERE user_name = #{userName}
+    </select>
+
+    <select id="selectRoleByUserName" resultType="role">
+        SELECT r.id,r.role_name,r.note FROM t_user u
+                LEFT JOIN t_user_role ur ON u.id = ur.user_id
+                LEFT JOIN t_role r ON ur.role_id = r.id
+                WHERE u.user_name =#{userName}
+    </select>
+
 </mapper>

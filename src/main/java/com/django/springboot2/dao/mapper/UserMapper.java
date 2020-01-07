@@ -1,5 +1,7 @@
 package com.django.springboot2.dao.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.django.springboot2.pojo.domain.Role;
 import com.django.springboot2.pojo.domain.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -12,10 +14,14 @@ import java.util.List;
  **/
 
 @Repository
-public interface UserMapper {
-     User getUser(Long id);
-     int insert(User user);
-     void updateUser(User user);
+public interface UserMapper  extends BaseMapper<User> {
      List<User> findUsers(@Param("userName") String userName, @Param("note") String note);
-     int deleteUser(Long id);
+
+     User selectByUserNameAndPwd(@Param("userName")String userName, @Param("pwd")String pwd);
+     User selectUserByUserName(@Param("userName")String userName);
+
+
+     List<Role> selectRoleByUserName(@Param("userName") String userName);
+
+
 }

@@ -64,7 +64,7 @@ public class SpringMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/page/**").addResourceLocations("classpath:/templates/");
+        registry.addResourceHandler("/pages/**").addResourceLocations("classpath:/views/");
     }
 
     /**
@@ -77,7 +77,8 @@ public class SpringMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
-        registry.addInterceptor(demoInterceptor());
+        InterceptorRegistration ir = registry.addInterceptor(demoInterceptor());
+        ir.addPathPatterns("/user/*");//只拦截指定url的请求，不指定默认拦截所有
     }
 
 
@@ -104,8 +105,9 @@ public class SpringMvcConfig implements WebMvcConfigurer {
     }
 
 
-
-    @Bean
+    // CommonsMultipartResolver 这个以来commons-fileupload
+    // 可以直接使用springboot 为我们生成的StandarServletMultipartResovler，都不用自己配置
+   /* @Bean
     public MultipartResolver multipartResolver(){
 
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
@@ -114,7 +116,7 @@ public class SpringMvcConfig implements WebMvcConfigurer {
         multipartResolver.setMaxUploadSize(50*1024);
         return multipartResolver;
 
-    }
+    }*/
 
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {

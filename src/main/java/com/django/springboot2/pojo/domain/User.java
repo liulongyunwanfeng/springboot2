@@ -1,5 +1,8 @@
 package com.django.springboot2.pojo.domain;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.django.springboot2.Enum.SexEnum;
 import com.django.springboot2.pojo.vo.UserVO;
 import org.apache.ibatis.type.Alias;
@@ -14,11 +17,12 @@ import java.util.List;
  * @create 2019/5/29 12:45
  **/
 @Alias(value = "user") //mybatis 指定别名
+@TableName(value = "t_user") //mybatisplus 指定的表名
 @Document
 public class User implements Serializable {
 
     private static final long serialVersionUID = 123456789l;
-
+    @TableId(type = IdType.AUTO)
     private Long id = null;
     @Field("user_name")
     private String userName=null;
@@ -26,6 +30,26 @@ public class User implements Serializable {
     // 使用mybatis 时 这个枚举类的封装需要用到typeHandler
     private SexEnum sex = null;
     private String note = null;
+
+    private  Integer available;
+
+    private String pwd;
+
+    public Integer getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(Integer available) {
+        this.available = available;
+    }
+
+    public String getPwd() {
+        return pwd;
+    }
+
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
+    }
 
     private  List<Role> roles = null;
 
@@ -45,6 +69,9 @@ public class User implements Serializable {
         this.id= userVO.getId();
         this.userName=userVO.getUserName();
         this.note=userVO.getNote();
+
+        this.pwd = userVO.getPwd();
+        this.available = userVO.getAvailable();
 
         if(SexEnum.MALE.getId()==userVO.getSex()){
             this.sex = SexEnum.MALE;

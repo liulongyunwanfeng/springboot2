@@ -1,5 +1,6 @@
 package com.django.springboot2.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.django.springboot2.pojo.domain.Organization;
 
 import java.math.BigDecimal;
@@ -20,5 +21,7 @@ public interface OrganizationService {
     public Organization getById(BigDecimal id);
 
     public List<Organization> getByWhere(Organization org);
+
+    public IPage<Organization> getPageByWhere(Organization organization);
 
 }
