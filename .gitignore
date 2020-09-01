@@ -3,8 +3,18 @@
 ### Example user template
 
 # IntelliJ project files
-.idea
+.idea/
 *.iml
 .gitignore
 target
 springboot2_2019-05-29.log
+springboot2_2019-05-09.log
+springboot2_2019-05-10.log
+springboot2_2019-05-14.log
+springboot2_2019-06-07.log
+springboot2_2019-06-08.log
+springboot2_2019-06-09.log
+springboot2_2019-06-10.log
+springboot2_2019-06-11.log
+src/main/resources/public/
+src/main/resources/views/
